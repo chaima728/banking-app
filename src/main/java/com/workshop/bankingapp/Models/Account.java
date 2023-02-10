@@ -1,10 +1,9 @@
 package com.workshop.bankingapp.Models;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,8 +14,23 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @Entity
 
-public class Account extends AbstractEntity {
+public class Account {
+    @Id
+    @GeneratedValue
+    private Integer id;
     private String iban ;
+
+    @CreatedDate
+    @Column(
+            name="CreatedDate"
+    )
+    private LocalDateTime CreatedDate;
+
+    @LastModifiedDate
+    @Column(
+            name="LastModifiedDate"
+    )
+    private LocalDateTime LastModifiedDate;
     @OneToOne
     @JoinColumn(name = "user-id")
     private User user;
