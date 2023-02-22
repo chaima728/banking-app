@@ -1,5 +1,7 @@
 package com.workshop.bankingapp.Interfaces;
 
+import com.workshop.bankingapp.Dtos.AuthenticationRequest;
+import com.workshop.bankingapp.Dtos.AuthenticationResponse;
 import com.workshop.bankingapp.Dtos.UserDto;
 import com.workshop.bankingapp.Models.User;
 
@@ -13,4 +15,9 @@ public interface IUser {
      void delete(Integer id);
 
      Integer validateAccount(Integer id);
+     Integer invalidateAccount(Integer id);
+     AuthenticationResponse register(UserDto user);
+     AuthenticationResponse Authenticate(AuthenticationRequest request);
+
+
 }

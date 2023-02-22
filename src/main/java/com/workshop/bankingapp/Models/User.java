@@ -8,9 +8,14 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import java.util.Collections;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -20,24 +25,11 @@ import java.util.List;
 @SuperBuilder
 @Entity
 @Table(name ="_name")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue
     private Integer id;
-
-    @org.springframework.data.annotation.CreatedDate
-    @Column(
-            name="CreatedDate",
-            nullable = false,
-            updatable = false
-    )
-    private LocalDateTime CreatedDate;
-    @org.springframework.data.annotation.LastModifiedDate
-    @Column(
-            name="LastModifiedDate"
-    )
-    private LocalDateTime LastModifiedDate;
 
     private String firstname;
     private String lastname;
@@ -58,4 +50,33 @@ public class User {
     @OneToOne
     private Role role;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority(role.getName()));
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return active;
+    }
 }
